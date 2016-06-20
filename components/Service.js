@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react'
 
-const Service = (props) => (
-    <div>
-      This is a Service page placeholder
+const Service = ({ offers }) => (
+    <div id="service__offers_conatiner">
+        <ul>
+            {offers.map((offer, idx) => <li key={idx}>{offer.address}</li>)}    
+        </ul>
     </div>
   )
 

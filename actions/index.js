@@ -10,16 +10,18 @@ function requestOffers () {
 function receiveOffers (json) {
     return {
         type: RECEIVE_OFFERS,
-        offrs: json
+        offers: json,
+        receivedAt: Date.now()
     }
 }
 
 function fetchOffers () {
 
-    dispatch(requestOffers())
-
     return function (dispatch) {
-        return fetch('offers.json')
+
+        dispatch(requestOffers())
+
+        return fetch('data/offers.json')
         .then(response => response.json())
         .then(json =>
 
@@ -32,4 +34,4 @@ function fetchOffers () {
     }
 }
 
-export { fetchOffers };
+export { REQUEST_OFFERS, RECEIVE_OFFERS, fetchOffers };

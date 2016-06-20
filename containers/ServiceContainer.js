@@ -1,13 +1,18 @@
 import { connect } from 'react-redux'
 import Service from '../components/Service'
+import { fetchOffers } from '../actions'
 
 const mapStateToProps = (state) => {
-  return state;
+    return {
+      offers: state.offers || []
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
+    dispatch(fetchOffers())
   return {
-    onSelectChange: () => {
+    onMount: (dispatch) => {
+        dispatch(fetchOffers());
     }
   }
 }

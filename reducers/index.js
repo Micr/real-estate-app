@@ -1,3 +1,5 @@
+import { REQUEST_OFFERS, RECEIVE_OFFERS } from '../actions';
+
 const initialState = {
   slogan: "It's your city, live in it",
   choices: [
@@ -13,7 +15,22 @@ const initialState = {
  * @return {Array} new store
  */
 const reducer = (state = initialState, action) => {
-  return state;
+    switch(action.type) {
+        case REQUEST_OFFERS:
+            return Object.assign({}, state, {
+                isFetching: true,
+                didInvalidate: false
+            })
+        case RECEIVE_OFFERS:
+            return Object.assign({}, state, {
+                isFetching: false,
+                didInvalidate: false,
+                offers: action.offers,
+                lastUpdated: action.receivedAt
+            })
+    }
+
+    return state;
 }
 
 export default reducer;

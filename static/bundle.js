@@ -54,6 +54,14 @@
 
 	var _reactRedux = __webpack_require__(168);
 
+	var _reduxThunk = __webpack_require__(262);
+
+	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
+	var _reduxLogger = __webpack_require__(263);
+
+	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
+
 	var _redux = __webpack_require__(175);
 
 	var _reactRouter = __webpack_require__(190);
@@ -66,29 +74,33 @@
 
 	var _Product2 = _interopRequireDefault(_Product);
 
-	var _Faq = __webpack_require__(253);
+	var _Faq = __webpack_require__(252);
 
 	var _Faq2 = _interopRequireDefault(_Faq);
 
-	var _HomeContainer = __webpack_require__(254);
+	var _HomeContainer = __webpack_require__(253);
 
 	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 
-	var _ReviewsContainer = __webpack_require__(257);
+	var _ReviewsContainer = __webpack_require__(256);
 
 	var _ReviewsContainer2 = _interopRequireDefault(_ReviewsContainer);
 
-	var _ServiceContainer = __webpack_require__(261);
+	var _ServiceContainer = __webpack_require__(259);
 
 	var _ServiceContainer2 = _interopRequireDefault(_ServiceContainer);
 
-	var _reducers = __webpack_require__(260);
+	var _reducers = __webpack_require__(261);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var store = (0, _redux.createStore)(_reducers2.default);
+	var loggerMiddleware = (0, _reduxLogger2.default)();
+
+	var store = (0, _redux.createStore)(_reducers2.default, (0, _redux.applyMiddleware)(_reduxThunk2.default, // lets us dispatch() functions
+	loggerMiddleware // neat middleware that logs actions
+	));
 
 	// Declarative route configuration (could also load this config lazily
 	// instead, all you really need is a single root route, you don't need to
@@ -27881,32 +27893,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Service = function Service(props) {
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    'This is a Service page placeholder'
-	  );
-	};
-
-	exports.default = Service;
-
-/***/ },
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 	var Faq = function Faq(props) {
 	  return _react2.default.createElement(
 	    'div',
@@ -27918,7 +27904,7 @@
 	exports.default = Faq;
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27929,7 +27915,7 @@
 
 	var _reactRedux = __webpack_require__(168);
 
-	var _Home = __webpack_require__(255);
+	var _Home = __webpack_require__(254);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
@@ -27950,7 +27936,7 @@
 	exports.default = HomeContainer;
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27967,7 +27953,7 @@
 
 	var _Menu2 = _interopRequireDefault(_Menu);
 
-	var _Showcase = __webpack_require__(256);
+	var _Showcase = __webpack_require__(255);
 
 	var _Showcase2 = _interopRequireDefault(_Showcase);
 
@@ -28003,7 +27989,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 256 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28025,7 +28011,7 @@
 	exports.default = Showcase;
 
 /***/ },
-/* 257 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28036,11 +28022,11 @@
 
 	var _reactRedux = __webpack_require__(168);
 
-	var _actions = __webpack_require__(258);
+	var _actions = __webpack_require__(257);
 
 	var _actions2 = _interopRequireDefault(_actions);
 
-	var _Reviews = __webpack_require__(259);
+	var _Reviews = __webpack_require__(258);
 
 	var _Reviews2 = _interopRequireDefault(_Reviews);
 
@@ -28063,7 +28049,7 @@
 	exports.default = Container;
 
 /***/ },
-/* 258 */
+/* 257 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28083,16 +28069,18 @@
 	function receiveOffers(json) {
 	    return {
 	        type: RECEIVE_OFFERS,
-	        offrs: json
+	        offers: json,
+	        receivedAt: Date.now()
 	    };
 	}
 
 	function fetchOffers() {
 
-	    dispatch(requestOffers());
-
 	    return function (dispatch) {
-	        return fetch('offers.json').then(function (response) {
+
+	        dispatch(requestOffers());
+
+	        return fetch('data/offers.json').then(function (response) {
 	            return response.json();
 	        }).then(function (json) {
 	            return(
@@ -28106,10 +28094,12 @@
 	    };
 	}
 
+	exports.REQUEST_OFFERS = REQUEST_OFFERS;
+	exports.RECEIVE_OFFERS = RECEIVE_OFFERS;
 	exports.fetchOffers = fetchOffers;
 
 /***/ },
-/* 259 */
+/* 258 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28145,35 +28135,7 @@
 	exports.default = Reviews;
 
 /***/ },
-/* 260 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var initialState = {
-	  slogan: "It's your city, live in it",
-	  choices: ['rent', 'review', 'sublease']
-	};
-	/**
-	 *	reduces a store
-	 * @param  {Array} store - current store
-	 * @param  {Object} action - an action to perform
-	 * @return {Array} new store
-	 */
-	var reducer = function reducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
-	  var action = arguments[1];
-
-	  return state;
-	};
-
-	exports.default = reducer;
-
-/***/ },
-/* 261 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28184,23 +28146,386 @@
 
 	var _reactRedux = __webpack_require__(168);
 
-	var _Service = __webpack_require__(252);
+	var _Service = __webpack_require__(260);
 
 	var _Service2 = _interopRequireDefault(_Service);
+
+	var _actions = __webpack_require__(257);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
-	  return state;
+	  return {
+	    offers: state.offers || []
+	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  dispatch((0, _actions.fetchOffers)());
 	  return {
-	    onSelectChange: function onSelectChange() {}
+	    onMount: function onMount(dispatch) {
+	      dispatch((0, _actions.fetchOffers)());
+	    }
 	  };
 	};
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Service2.default);
+
+/***/ },
+/* 260 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Service = function Service(_ref) {
+	    var offers = _ref.offers;
+	    return _react2.default.createElement(
+	        "div",
+	        { id: "service__offers_conatiner" },
+	        _react2.default.createElement(
+	            "ul",
+	            null,
+	            offers.map(function (offer, idx) {
+	                return _react2.default.createElement(
+	                    "li",
+	                    { key: idx },
+	                    offer.address
+	                );
+	            })
+	        )
+	    );
+	};
+
+	exports.default = Service;
+
+/***/ },
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _actions = __webpack_require__(257);
+
+	var initialState = {
+	    slogan: "It's your city, live in it",
+	    choices: ['rent', 'review', 'sublease']
+	};
+	/**
+	 *	reduces a store
+	 * @param  {Array} store - current store
+	 * @param  {Object} action - an action to perform
+	 * @return {Array} new store
+	 */
+	var reducer = function reducer() {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _actions.REQUEST_OFFERS:
+	            return Object.assign({}, state, {
+	                isFetching: true,
+	                didInvalidate: false
+	            });
+	        case _actions.RECEIVE_OFFERS:
+	            return Object.assign({}, state, {
+	                isFetching: false,
+	                didInvalidate: false,
+	                offers: action.offers,
+	                lastUpdated: action.receivedAt
+	            });
+	    }
+
+	    return state;
+	};
+
+	exports.default = reducer;
+
+/***/ },
+/* 262 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	function createThunkMiddleware(extraArgument) {
+	  return function (_ref) {
+	    var dispatch = _ref.dispatch;
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        if (typeof action === 'function') {
+	          return action(dispatch, getState, extraArgument);
+	        }
+
+	        return next(action);
+	      };
+	    };
+	  };
+	}
+
+	var thunk = createThunkMiddleware();
+	thunk.withExtraArgument = createThunkMiddleware;
+
+	exports['default'] = thunk;
+
+/***/ },
+/* 263 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	function _toConsumableArray(arr) {
+	  if (Array.isArray(arr)) {
+	    for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+	      arr2[i] = arr[i];
+	    }return arr2;
+	  } else {
+	    return Array.from(arr);
+	  }
+	}
+
+	function _typeof(obj) {
+	  return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
+	}
+
+	var repeat = function repeat(str, times) {
+	  return new Array(times + 1).join(str);
+	};
+	var pad = function pad(num, maxLength) {
+	  return repeat("0", maxLength - num.toString().length) + num;
+	};
+	var formatTime = function formatTime(time) {
+	  return "@ " + pad(time.getHours(), 2) + ":" + pad(time.getMinutes(), 2) + ":" + pad(time.getSeconds(), 2) + "." + pad(time.getMilliseconds(), 3);
+	};
+
+	// Use the new performance api to get better precision if available
+	var timer = typeof performance !== "undefined" && typeof performance.now === "function" ? performance : Date;
+
+	/**
+	 * parse the level option of createLogger
+	 *
+	 * @property {string | function | object} level - console[level]
+	 * @property {object} action
+	 * @property {array} payload
+	 * @property {string} type
+	 */
+
+	function getLogLevel(level, action, payload, type) {
+	  switch (typeof level === "undefined" ? "undefined" : _typeof(level)) {
+	    case "object":
+	      return typeof level[type] === "function" ? level[type].apply(level, _toConsumableArray(payload)) : level[type];
+	    case "function":
+	      return level(action);
+	    default:
+	      return level;
+	  }
+	}
+
+	/**
+	 * Creates logger with followed options
+	 *
+	 * @namespace
+	 * @property {object} options - options for logger
+	 * @property {string | function | object} options.level - console[level]
+	 * @property {boolean} options.duration - print duration of each action?
+	 * @property {boolean} options.timestamp - print timestamp with each action?
+	 * @property {object} options.colors - custom colors
+	 * @property {object} options.logger - implementation of the `console` API
+	 * @property {boolean} options.logErrors - should errors in action execution be caught, logged, and re-thrown?
+	 * @property {boolean} options.collapsed - is group collapsed?
+	 * @property {boolean} options.predicate - condition which resolves logger behavior
+	 * @property {function} options.stateTransformer - transform state before print
+	 * @property {function} options.actionTransformer - transform action before print
+	 * @property {function} options.errorTransformer - transform error before print
+	 */
+
+	function createLogger() {
+	  var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var _options$level = options.level;
+	  var level = _options$level === undefined ? "log" : _options$level;
+	  var _options$logger = options.logger;
+	  var logger = _options$logger === undefined ? console : _options$logger;
+	  var _options$logErrors = options.logErrors;
+	  var logErrors = _options$logErrors === undefined ? true : _options$logErrors;
+	  var collapsed = options.collapsed;
+	  var predicate = options.predicate;
+	  var _options$duration = options.duration;
+	  var duration = _options$duration === undefined ? false : _options$duration;
+	  var _options$timestamp = options.timestamp;
+	  var timestamp = _options$timestamp === undefined ? true : _options$timestamp;
+	  var transformer = options.transformer;
+	  var _options$stateTransfo = options.stateTransformer;
+	  var // deprecated
+	  stateTransformer = _options$stateTransfo === undefined ? function (state) {
+	    return state;
+	  } : _options$stateTransfo;
+	  var _options$actionTransf = options.actionTransformer;
+	  var actionTransformer = _options$actionTransf === undefined ? function (actn) {
+	    return actn;
+	  } : _options$actionTransf;
+	  var _options$errorTransfo = options.errorTransformer;
+	  var errorTransformer = _options$errorTransfo === undefined ? function (error) {
+	    return error;
+	  } : _options$errorTransfo;
+	  var _options$colors = options.colors;
+	  var colors = _options$colors === undefined ? {
+	    title: function title() {
+	      return "#000000";
+	    },
+	    prevState: function prevState() {
+	      return "#9E9E9E";
+	    },
+	    action: function action() {
+	      return "#03A9F4";
+	    },
+	    nextState: function nextState() {
+	      return "#4CAF50";
+	    },
+	    error: function error() {
+	      return "#F20404";
+	    }
+	  } : _options$colors;
+
+	  // exit if console undefined
+
+	  if (typeof logger === "undefined") {
+	    return function () {
+	      return function (next) {
+	        return function (action) {
+	          return next(action);
+	        };
+	      };
+	    };
+	  }
+
+	  if (transformer) {
+	    console.error("Option 'transformer' is deprecated, use stateTransformer instead");
+	  }
+
+	  var logBuffer = [];
+	  function printBuffer() {
+	    logBuffer.forEach(function (logEntry, key) {
+	      var started = logEntry.started;
+	      var startedTime = logEntry.startedTime;
+	      var action = logEntry.action;
+	      var prevState = logEntry.prevState;
+	      var error = logEntry.error;
+	      var took = logEntry.took;
+	      var nextState = logEntry.nextState;
+
+	      var nextEntry = logBuffer[key + 1];
+	      if (nextEntry) {
+	        nextState = nextEntry.prevState;
+	        took = nextEntry.started - started;
+	      }
+	      // message
+	      var formattedAction = actionTransformer(action);
+	      var isCollapsed = typeof collapsed === "function" ? collapsed(function () {
+	        return nextState;
+	      }, action) : collapsed;
+
+	      var formattedTime = formatTime(startedTime);
+	      var titleCSS = colors.title ? "color: " + colors.title(formattedAction) + ";" : null;
+	      var title = "action " + (timestamp ? formattedTime : "") + " " + formattedAction.type + " " + (duration ? "(in " + took.toFixed(2) + " ms)" : "");
+
+	      // render
+	      try {
+	        if (isCollapsed) {
+	          if (colors.title) logger.groupCollapsed("%c " + title, titleCSS);else logger.groupCollapsed(title);
+	        } else {
+	          if (colors.title) logger.group("%c " + title, titleCSS);else logger.group(title);
+	        }
+	      } catch (e) {
+	        logger.log(title);
+	      }
+
+	      var prevStateLevel = getLogLevel(level, formattedAction, [prevState], "prevState");
+	      var actionLevel = getLogLevel(level, formattedAction, [formattedAction], "action");
+	      var errorLevel = getLogLevel(level, formattedAction, [error, prevState], "error");
+	      var nextStateLevel = getLogLevel(level, formattedAction, [nextState], "nextState");
+
+	      if (prevStateLevel) {
+	        if (colors.prevState) logger[prevStateLevel]("%c prev state", "color: " + colors.prevState(prevState) + "; font-weight: bold", prevState);else logger[prevStateLevel]("prev state", prevState);
+	      }
+
+	      if (actionLevel) {
+	        if (colors.action) logger[actionLevel]("%c action", "color: " + colors.action(formattedAction) + "; font-weight: bold", formattedAction);else logger[actionLevel]("action", formattedAction);
+	      }
+
+	      if (error && errorLevel) {
+	        if (colors.error) logger[errorLevel]("%c error", "color: " + colors.error(error, prevState) + "; font-weight: bold", error);else logger[errorLevel]("error", error);
+	      }
+
+	      if (nextStateLevel) {
+	        if (colors.nextState) logger[nextStateLevel]("%c next state", "color: " + colors.nextState(nextState) + "; font-weight: bold", nextState);else logger[nextStateLevel]("next state", nextState);
+	      }
+
+	      try {
+	        logger.groupEnd();
+	      } catch (e) {
+	        logger.log("—— log end ——");
+	      }
+	    });
+	    logBuffer.length = 0;
+	  }
+
+	  return function (_ref) {
+	    var getState = _ref.getState;
+	    return function (next) {
+	      return function (action) {
+	        // exit early if predicate function returns false
+	        if (typeof predicate === "function" && !predicate(getState, action)) {
+	          return next(action);
+	        }
+
+	        var logEntry = {};
+	        logBuffer.push(logEntry);
+
+	        logEntry.started = timer.now();
+	        logEntry.startedTime = new Date();
+	        logEntry.prevState = stateTransformer(getState());
+	        logEntry.action = action;
+
+	        var returnedValue = undefined;
+	        if (logErrors) {
+	          try {
+	            returnedValue = next(action);
+	          } catch (e) {
+	            logEntry.error = errorTransformer(e);
+	          }
+	        } else {
+	          returnedValue = next(action);
+	        }
+
+	        logEntry.took = timer.now() - logEntry.started;
+	        logEntry.nextState = stateTransformer(getState());
+
+	        printBuffer();
+
+	        if (logEntry.error) throw logEntry.error;
+	        return returnedValue;
+	      };
+	    };
+	  };
+	}
+
+	module.exports = createLogger;
 
 /***/ }
 /******/ ]);

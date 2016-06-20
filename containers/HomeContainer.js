@@ -1,4 +1,3 @@
-import { createStore } from 'redux'
 import { connect } from 'react-redux'
 import setId from '../actions'
 import Home from '../components/Home'

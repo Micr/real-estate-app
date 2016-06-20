@@ -5,10 +5,10 @@ import { createStore } from 'redux'
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router'
 import App from './components/App'
 import Product from './components/Product'
-import Service from './components/Service'
 import Faq from './components/Faq'
 import HomeContainer from './containers/HomeContainer'
 import ReviewsContainer from './containers/ReviewsContainer'
+import ServiceContainer from './containers/ServiceContainer'
 import reducer from './reducers'
 
 let store = createStore(reducer);
@@ -23,7 +23,7 @@ render((
         <IndexRoute component={HomeContainer} />
         <Route path="reviews" component={ReviewsContainer}/>
         <Route path="procuct" component={Product}/>
-        <Route path="service" component={Service}/>
+        <Route path="service" component={ServiceContainer}/>
         <Route path="faq" component={Faq}/>
       </Route>
         {/*}<Route path="rent" component={Rent}/>

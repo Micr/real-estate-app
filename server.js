@@ -3,7 +3,7 @@ var app = express();
 
 app.set('port', (process.env.PORT || 9999));
 
-app.use("/static", express.static('build'));
+app.use("/static", express.static('static'));
 
 app.get("*", function(req, res) {
   res.sendFile(__dirname + '/index.html')

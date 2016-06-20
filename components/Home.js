@@ -1,6 +1,7 @@
 import React from 'react'
 import Menu from './Menu'
 import Showcase from './Showcase'
+
 var Home = ({ slogan, choices, children }) => (
   <div id="home">
     <Showcase />

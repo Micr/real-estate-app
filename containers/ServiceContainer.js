@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import Home from '../components/Home'
+import Service from '../components/Service'
 
 const mapStateToProps = (state) => {
   return state;
@@ -12,9 +12,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const HomeContainer = connect(
+export default connect(
    mapStateToProps,
    mapDispatchToProps
-)(Home)
-
-export default HomeContainer;
+)(Service)

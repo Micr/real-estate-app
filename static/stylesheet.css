@@ -4,3 +4,19 @@
     background-color: #eee;
     margin: 5px;
 }
+
+.service__offers_item {
+  float: left;
+  width: 300px;
+  height: 400px;
+  margin: 10px;
+}
+
+.service__offers_image {
+  height: 200px;
+  width: 300px;
+}
+
+.service__offers_list {
+  list-style: none;
+}

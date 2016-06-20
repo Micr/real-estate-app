@@ -2,6 +2,7 @@ import { REQUEST_OFFERS, RECEIVE_OFFERS } from '../actions';
 
 const initialState = {
   slogan: "It's your city, live in it",
+  imagesPath: "/static/images",
   choices: [
     'rent',
     'review',

@@ -16,3 +16,9 @@
   height: 200px;
   width: 300px;
 }
+
+.service__offers_list {
+  list-style: none;
+  position: absolute;
+  height: 100%;
+}

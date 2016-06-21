@@ -1,11 +1,12 @@
 {
-  "name": "chained-select",
+  "name": "realest",
   "version": "1.0.0",
-  "description": "",
+  "description": "Real estate site",
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register",
-    "build": "webpack -d --progress --colors --watch index.js static/bundle.js --module-bind 'js=babel-loader'"
+    "build": "webpack --progress --colors --watch --module-bind 'js=babel-loader'",
+    "dev": "webpack-dev-server --port 9999 --inline --content-base ."
   },
   "author": "Sergey Smolin",
   "license": "ISC",
